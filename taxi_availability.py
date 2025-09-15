@@ -1,6 +1,7 @@
 import requests
 import json
 from datetime import datetime
+from collections import Counter
 import sys
 
 def get_taxi_availability():
@@ -25,9 +26,9 @@ def get_taxi_availability():
         print(f"Error making API request: {e}")
         return None
 
-def display_taxi_count(data):
+def display_taxi_data(data):
     """
-    Extract and display the total number of available taxis
+    Extract and display the total number of available taxis and lists top 10 areas with highest concentration of taxis
     
     Args:
         data (dict): API response data
@@ -55,7 +56,15 @@ def display_taxi_count(data):
         #     "type": "Feature",
         #     "geometry": {
         #         "type": "MultiPoint",
-        #         "coordinates":
+        #         "coordinates": [
+        #   [
+        #     103.61448,
+        #     1.26637
+        #   ],
+        #   [
+        #     103.6251772195,
+        #     1.3043662603
+        #   ],
         #          ............
         #        },
         #       "properties": {
@@ -77,13 +86,43 @@ def display_taxi_count(data):
         
         # Get the first feature 
         feature = features[0]
+
+        # Get taxi count
         properties = feature.get('properties', {})
         taxi_count = properties.get('taxi_count', 0)
+
+        print(f"Total available taxis: {taxi_count:}")
+
+        # Get coordinates
+        geometry = feature.get('geometry', {})
+        coordinates = geometry.get('coordinates', [])
+
+        if not coordinates:
+            print("No coordinate data available")
+            return
         
-        # Display the results
-        print(f"Total Available Taxis: {taxi_count:}")
+
+        # Need to round coordinates to 2 dp as shown in test output, currently coordinates are in the form [103.61448, 1.26637] for example
+        two_dp_coordinates = []
         
-        
+        for i in coordinates:
+            lat = round(i[1], 2)
+            lon = round(i[0], 2)
+            two_dp_coordinates.append((lat, lon))
+
+        # Return top 10 taxi counts for each unique pair of [lat, lon]
+        counts = Counter(two_dp_coordinates)
+        top_10_counts = counts.most_common(10)
+
+        print("Top 10 areas with the most taxis:")
+
+        # top_10_counts looks like [((lat, lon), count), ((lat, lon), count), ....]
+        for i in range(len(top_10_counts)):
+            (lat, lon) = top_10_counts[i][0]
+            count = top_10_counts[i][1]
+            print(f"{i+1}. Lat: {lat}, Lon: {lon} - {count} taxis")
+
+
     except (KeyError, IndexError, TypeError) as e:
         print(f"Error parsing API response: {e}")
         print("Raw response structure:")
@@ -95,7 +134,7 @@ def main():
     """
     
     data = get_taxi_availability()
-    display_taxi_count(data)
+    display_taxi_data(data)
 
 if __name__ == "__main__":
     main()
