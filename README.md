@@ -9,14 +9,14 @@
 3. **Get an SEA-LION API key following the guide from https://docs.sea-lion.ai/guides/inferencing/api**
 4. **Run the application with the following syntax:**
 
-`book_translation.py --language {indonesian,filipino,tamil,thai,vietnamese} [--api-key API_KEY] [--output OUTPUT]`
+`python book_translation.py --language {indonesian,filipino,tamil,thai,vietnamese} [--api-key API_KEY] [--output OUTPUT]`
 
 For example, a valid syntax would be:
 `python book_translation.py --language tamil --api-key sk-xxxxxxxxxxxxxxxxxxx`
 
 The argument of api-key and language is compulsory, whereas the output argument is optional, representing the name of the output file, and can be represented by "some_text.txt" for example. 
 
-You may run `book_translation.py -h` to display the help message in the terminal.
+You may run `python book_translation.py -h` to display the help message in the terminal.
 
 5. **You will find a new directory named "output" with a translated txt file inside.**
 
