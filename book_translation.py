@@ -1,12 +1,3 @@
-"""
-Book Translation Application using SEA-LION API
-
-This application downloads and translates the book "The Art of Public Speaking" from Project Gutenberg
-to one of the supported Southeast Asian languages using the SEA-LION API.
-
-Supported languages: Indonesian, Filipino, Tamil, Thai, Vietnamese
-"""
-
 import os
 import sys
 import requests

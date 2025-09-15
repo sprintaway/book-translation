@@ -1,8 +1,6 @@
 import requests
 import json
-from datetime import datetime
 from collections import Counter
-import sys
 import time
 from geopy.geocoders import Nominatim
 
