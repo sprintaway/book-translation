@@ -6,6 +6,9 @@
 
 2. **Install required dependencies using**
 `pip install -r requirements.txt`
+
+## For Assignment 1:
+
 3. **Get an SEA-LION API key following the guide from https://docs.sea-lion.ai/guides/inferencing/api**
 4. **Run the application with the following syntax:**
 
@@ -20,5 +23,12 @@ You may run `python book_translation.py -h` to display the help message in the t
 
 5. **You will find a new directory named "output" with a translated txt file inside.**
 
-## DISCLAIMER: The logging, exceptions/errors, argument parsing, the definition of functions, and single line comments are done by ChatGPT. The main logic of the functions and classes are mostly implemented by me (download_book is done by ChatGPT however).
+### DISCLAIMER: The logging, exceptions/errors, argument parsing, the definition of functions, and single line comments are done by ChatGPT. The main logic of the functions and classes are mostly implemented by me (download_book is done by ChatGPT however).
 
+## For Assignment 2:
+
+3. **Run the application with the following syntax:**
+
+`python taxi_availability.py`
+
+### DISCLAIMER: The logging, exceptions/errors, definition of functions, and single line comments are done by ChatGPT. The main logic of the functions and classes are implemented by me.
