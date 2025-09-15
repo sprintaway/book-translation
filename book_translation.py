@@ -5,8 +5,6 @@ This application downloads and translates the book "The Art of Public Speaking" 
 to one of the supported Southeast Asian languages using the SEA-LION API.
 
 Supported languages: Indonesian, Filipino, Tamil, Thai, Vietnamese
-
-Author: Book Translator
 """
 
 import os
