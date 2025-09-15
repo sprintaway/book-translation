@@ -3,6 +3,8 @@ import json
 from datetime import datetime
 from collections import Counter
 import sys
+import time
+from geopy.geocoders import Nominatim
 
 def get_taxi_availability():
     """
@@ -25,6 +27,41 @@ def get_taxi_availability():
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return None
+
+def get_location_name(lat, lon):
+    """
+    Get location name from coordinates using geopy reverse geocoding
+    
+    Args:
+        lat (float): Latitude
+        lon (float): Longitude
+    
+    Returns:
+        str: Location name or coordinates if geocoding fails
+    """
+    try:
+        # I will be using geopy which is free but rate-limited, can also use google map api but that requires API key and may not be free after certain usage
+
+        # From documentation https://geopy.readthedocs.io/en/stable/,  
+
+        # To find the address corresponding to a set of coordinates:
+        # from geopy.geocoders import Nominatim
+        # geolocator = Nominatim(user_agent="specify_your_app_name_here")
+        # location = geolocator.reverse("52.509669, 13.376294")
+        # print(location.address)
+        # Potsdamer Platz, Mitte, Berlin, 10117, Deutschland, European Union
+        # print((location.latitude, location.longitude))
+        # (52.5094982, 13.3765983)
+        # print(location.raw)
+        # {'place_id': '654513', 'osm_type': 'node', ...}
+
+        geolocator = Nominatim(user_agent="TaxiAvailabilityChecker")
+        location = geolocator.reverse(f"{lat}, {lon}")
+        return location.address
+    
+    except Exception as e:
+        print(f"Error geocoding {lat}, {lon}: {e}")
+        return f"Lat: {lat}, Lon: {lon}"
 
 def display_taxi_data(data):
     """
@@ -120,8 +157,17 @@ def display_taxi_data(data):
         for i in range(len(top_10_counts)):
             (lat, lon) = top_10_counts[i][0]
             count = top_10_counts[i][1]
-            print(f"{i+1}. Lat: {lat}, Lon: {lon} - {count} taxis")
 
+            location_name = get_location_name(lat, lon)
+
+            # Add a small delay between requests to be respectful to the API
+            time.sleep(0.1)
+
+            map_link = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
+            
+            print(f"{i+1}. Lat: {lat}, Lon: {lon} - {count} taxis")
+            print(f"   Location: {location_name}")
+            print(f"   Google Maps: {map_link}")
 
     except (KeyError, IndexError, TypeError) as e:
         print(f"Error parsing API response: {e}")
